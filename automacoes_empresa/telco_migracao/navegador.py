@@ -22,7 +22,6 @@ def fazer_login(driver, usuario_texto, senha_texto):
 
     time.sleep(1)
 
-    # seleciona sugestão do Chrome (login salvo)
     usuario.send_keys("\ue015")  # seta para baixo
     usuario.send_keys("\ue007")  # ENTER
 
@@ -40,9 +39,21 @@ def fazer_login(driver, usuario_texto, senha_texto):
 
     time.sleep(5)
 
+import time
+
 def acessar_migracao(driver):
 
-    espera = WebDriverWait(driver, 10)
+    espera = WebDriverWait(driver, 60)
+
+    # aguarda o modal de loading sumir
+    espera.until(
+        EC.invisibility_of_element_located(
+            (By.CLASS_NAME, "modal-loading")
+        )
+    )
+
+    # tempo extra de garantia após o modal sumir
+    time.sleep(3)
 
     # abre menu Migração
     menu_migracao = espera.until(
@@ -54,9 +65,9 @@ def acessar_migracao(driver):
         )
     )
 
-    menu_migracao.click()
+    driver.execute_script("arguments[0].click();", menu_migracao)
+    time.sleep(1)
 
-    # abre subitem
     migracao_massa = espera.until(
         EC.element_to_be_clickable(
             (
@@ -66,7 +77,7 @@ def acessar_migracao(driver):
         )
     )
 
-    migracao_massa.click()
+    driver.execute_script("arguments[0].click();", migracao_massa)
 
 def clicar_novo(driver):
     espera = WebDriverWait(driver, 10)
