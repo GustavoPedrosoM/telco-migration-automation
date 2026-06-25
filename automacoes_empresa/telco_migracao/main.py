@@ -6,9 +6,20 @@ from navegador import (
     executar_migracao )
 from upload import preencher_migracao, clicar_salvar, mover_para_feito
 from log_checker import verificar_erros_relatorio
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 driver = iniciar_driver()
-fazer_login(driver, "gustavo.machado", "@Tfttop8")
+usuario = os.getenv("TELCO_USER")
+senha = os.getenv("TELCO_PASSWORD")
+
+fazer_login(
+    driver,
+    usuario,
+    senha
+)
 acessar_migracao(driver)
 
 while True:

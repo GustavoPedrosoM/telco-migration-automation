@@ -3,11 +3,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 def iniciar_driver():
+
+    url = os.getenv("TELCO_URL")
     driver = webdriver.Chrome()
-    driver.get("https://teste.adapter.net.br/adapter/#/login")
+    driver.get(url)
     driver.maximize_window()
     return driver
 
