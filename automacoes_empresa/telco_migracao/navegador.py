@@ -15,25 +15,22 @@ def iniciar_driver():
 def fazer_login(driver, usuario_texto, senha_texto):
     time.sleep(3)
 
-    # campo usuário
     usuario = driver.find_element(By.XPATH, "//input[@type='text']")
     usuario.click()
     usuario.send_keys(usuario_texto)
 
     time.sleep(1)
 
-    usuario.send_keys("\ue015")  # seta para baixo
-    usuario.send_keys("\ue007")  # ENTER
+    usuario.send_keys("\ue015")  
+    usuario.send_keys("\ue007")  
 
     time.sleep(2)
 
-    # campo senha
     senha = driver.find_element(By.XPATH, "//input[@type='password']")
     senha.send_keys(senha_texto)
 
     time.sleep(1)
 
-    # botão entrar
     botao = driver.find_element(By.XPATH, "//button[contains(normalize-space(.), 'Entrar')]")
     botao.click()
 

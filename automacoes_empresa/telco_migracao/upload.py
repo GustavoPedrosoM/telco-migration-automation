@@ -20,10 +20,6 @@ def obter_proximo_arquivo():
 def preencher_migracao(driver):
     espera = WebDriverWait(driver, 15)
 
-    # ======================
-    # Tipo migração
-    # ======================
-
     tipo = espera.until(
         EC.presence_of_element_located(
             (By.NAME, "identificadorTipoMigracao")
@@ -32,10 +28,6 @@ def preencher_migracao(driver):
 
     Select(tipo).select_by_visible_text("Endereco Terceiros")
 
-    # ======================
-    # Ambiente
-    # ======================
-
     ambiente = espera.until(
         EC.presence_of_element_located(
             (By.CSS_SELECTOR, "select[ng-model='migracaoDados.ambienteMigracao']")
@@ -43,10 +35,6 @@ def preencher_migracao(driver):
     )
 
     Select(ambiente).select_by_visible_text("HOMOLOGACAO")
-
-    # ======================
-    # Arquivo automático
-    # ======================
 
     caminho = obter_proximo_arquivo()
 
@@ -63,10 +51,6 @@ def preencher_migracao(driver):
     )
 
     upload.send_keys(caminho)
-
-    # ======================
-    # Ação
-    # ======================
 
     acao = espera.until(
         EC.presence_of_element_located(
