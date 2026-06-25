@@ -20,8 +20,7 @@ while True:
         print("Sem arquivos para processar")
         break
 
-    clicar_salvar(driver)
-    mover_para_feito(caminho)  # move após salvar com sucesso
+    clicar_salvar(driver) 
     acessar_relatorios_migracao(driver)
     acessar_erro(driver)
     sem_erros = verificar_erros_relatorio(driver)
@@ -29,11 +28,12 @@ while True:
     if not sem_erros:
         driver.quit()
         exit()
+    
+    mover_para_feito(caminho)
 
     acessar_migracao(driver)
     ordenar_migracao_descendente(driver)
     executar_migracao(driver)
-    # volta para o topo do loop, aguarda carregamento e clica em Novo
 
 input("Pressione ENTER para fechar...")
 driver.quit()
