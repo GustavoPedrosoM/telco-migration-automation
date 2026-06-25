@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pathlib import Path
-
+import shutil
 
 def obter_proximo_arquivo():
     home = Path.home()
@@ -76,10 +76,24 @@ def preencher_migracao(driver):
 
     Select(acao).select_by_visible_text("ANALISE")
 
-    return True
+    return caminho
 
 def clicar_salvar(driver):
-    espera = WebDriverWait(driver, 15)
+    espera = WebDriverWait(driver, 60)
+
+    # aguarda loader-text sumir
+    espera.until(
+        EC.invisibility_of_element_located(
+            (By.CLASS_NAME, "loader-text")
+        )
+    )
+
+    # aguarda modal-loading sumir
+    espera.until(
+        EC.invisibility_of_element_located(
+            (By.CLASS_NAME, "modal-loading")
+        )
+    )
 
     salvar = espera.until(
         EC.element_to_be_clickable(
@@ -87,4 +101,16 @@ def clicar_salvar(driver):
         )
     )
 
-    salvar.click()
+    driver.execute_script("arguments[0].click();", salvar)
+
+def mover_para_feito(caminho):
+    origem = Path(caminho)
+    destino_pasta = Path("C:/Users/gustavo.machado/Documents/Enderecos/feito")
+
+    # cria a pasta feito se não existir
+    destino_pasta.mkdir(parents=True, exist_ok=True)
+
+    destino = destino_pasta / origem.name
+
+    shutil.move(str(origem), str(destino))
+    print(f"Arquivo movido para: {destino}")

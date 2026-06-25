@@ -52,9 +52,6 @@ def acessar_migracao(driver):
         )
     )
 
-    # tempo extra de garantia após o modal sumir
-    time.sleep(3)
-
     # abre menu Migração
     menu_migracao = espera.until(
         EC.element_to_be_clickable(
@@ -80,17 +77,135 @@ def acessar_migracao(driver):
     driver.execute_script("arguments[0].click();", migracao_massa)
 
 def clicar_novo(driver):
-    espera = WebDriverWait(driver, 10)
-    time.sleep(2)
-    
+    espera = WebDriverWait(driver, 60)
+
+    # aguarda os loaders sumirem após execução da migração
+    aguardar_carregamento(driver)
+
     botao_novo = espera.until(
         EC.element_to_be_clickable(
-            (
-                By.XPATH,
-                "//a[@href='#/migracao/migracao_dados/novo']"
-            )
+            (By.XPATH, "//a[@href='#/migracao/migracao_dados/novo']")
         )
     )
-    
-    botao_novo.click()
-    time.sleep(2)
+
+    driver.execute_script("arguments[0].click();", botao_novo)
+
+def acessar_relatorios_migracao(driver):
+
+    espera = WebDriverWait(driver, 60)
+
+    aguardar_carregamento(driver)
+
+    espera.until(
+        EC.url_contains("/migracao/migracao_dados")
+    )
+    print("✓ redirecionou para migracao_dados")
+
+    menu_migracao = espera.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//span[contains(normalize-space(.), 'Migração')]")
+        )
+    )
+
+    driver.execute_script("arguments[0].click();", menu_migracao)
+    print("✓ clicou no menu Migração")
+
+    relatorios = espera.until(
+        EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, "a[href='#/relatorios/migracao']")
+        )
+    )
+
+    driver.execute_script("arguments[0].click();", relatorios)
+    print("✓ clicou em Relatórios")
+
+    print(f"URL atual: {driver.current_url}")
+
+    espera.until(
+        EC.presence_of_element_located(
+            (By.XPATH, "//a[@href='#/relatorios/migracao/42']")
+        )
+    )
+    print("✓ encontrou link erro cadastral")
+
+def acessar_erro(driver):
+    espera = WebDriverWait(driver, 60)
+
+    botao_erro = espera.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//a[@href='#/relatorios/migracao/42']")
+        )
+    )
+
+    driver.execute_script("arguments[0].click();", botao_erro)
+
+    botao_visualizar = espera.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//button[contains(normalize-space(.), 'Visualizar')]")
+        )
+    )
+
+    driver.execute_script("arguments[0].click();", botao_visualizar)
+
+    # aguarda a nova aba abrir
+    espera.until(
+        lambda d: len(d.window_handles) > 1
+    )
+
+def ordenar_migracao_descendente(driver):
+    espera = WebDriverWait(driver, 30)
+
+    th_numero = espera.until(
+        EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, "th.hidden-xs[aria-controls='viewMigracaoDados']")
+        )
+    )
+
+    # verifica se já está descendente, se não estiver clica
+    if "sorting_desc" not in th_numero.get_attribute("class"):
+        driver.execute_script("arguments[0].click();", th_numero)
+
+    # aguarda a tabela reordenar
+    espera.until(
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "th.hidden-xs.sorting_desc[aria-controls='viewMigracaoDados']")
+        )
+    )
+
+def executar_migracao(driver):
+    espera = WebDriverWait(driver, 30)
+
+    # pega o botão de executar apenas da primeira linha da tabela
+    botao_executar = espera.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "(//button[@ng-click='migrarAnalise(migracaoDados)'])[1]")
+        )
+    )
+
+    driver.execute_script("arguments[0].click();", botao_executar)
+
+    # aguarda o modal de confirmação aparecer
+    botao_ok = espera.until(
+        EC.element_to_be_clickable(
+            (By.XPATH, "//button[@data-bb-handler='confirm']")
+        )
+    )
+
+    botao_ok.click()
+
+def aguardar_carregamento(driver, timeout=60):
+    espera = WebDriverWait(driver, timeout)
+
+    espera.until(
+        EC.invisibility_of_element_located(
+            (By.CLASS_NAME, "loader-text")
+        )
+    )
+
+    espera.until(
+        EC.invisibility_of_element_located(
+            (By.CLASS_NAME, "modal-loading")
+        )
+    )
+
+    time.sleep(6)
