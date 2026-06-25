@@ -187,6 +187,100 @@ TELCO_PASSWORD=senha_real
 
 ────────────────────────────────────────────
 
+📂 PROCESSO DE ENTRADA DE ARQUIVOS (PLANILHAS)
+
+A automação foi projetada para realizar a migração de planilhas de endereços para o ambiente de produção.
+
+Essas planilhas NÃO são inseridas manualmente no script, mas sim organizadas localmente no computador.
+
+────────────────────────────
+
+📥 ORIGEM DAS PLANILHAS
+
+As planilhas são baixadas a partir do SharePoint da empresa.
+
+Após o download, o usuário deve organizar os arquivos da seguinte forma:
+
+• Ir até a pasta "Documentos" do computador
+
+• Criar uma pasta chamada: Enderecos
+
+• Colocar todas as planilhas dentro desta pasta
+
+Exemplo de estrutura:
+
+Documentos/
+
+└── Enderecos/
+
+├── arquivo1.xlsx
+
+├── arquivo2.xlsx
+
+├── arquivo3.xlsx
+
+────────────────────────────
+
+🚀 COMO A AUTOMAÇÃO PROCESSA OS ARQUIVOS
+
+Ao executar o script:
+
+• O sistema acessa automaticamente a pasta "Documentos/Enderecos"
+
+• Lê todas as planilhas disponíveis na pasta
+
+• Processa uma por uma de forma sequencial
+
+• Realiza a migração para o sistema Telco
+
+Quando todas as planilhas forem processadas:
+
+• O script encerra automaticamente
+
+• Para novas execuções, basta adicionar novos arquivos na pasta e rodar novamente o script
+
+────────────────────────────
+
+⚠️ TRATAMENTO DE ERROS NAS PLANILHAS
+
+Durante a execução, algumas planilhas podem conter inconsistências ou erros de validação.
+
+Quando isso acontecer:
+
+• A automação irá identificar o erro durante o processo
+
+• Um alerta será exibido para o usuário
+
+• O usuário deve clicar em "OK" para confirmar o aviso
+
+• Após confirmação, o script será interrompido automaticamente
+
+────────────────────────────
+
+🔧 FLUXO DE CORREÇÃO
+
+Caso uma planilha apresente erro:
+
+1. O script exibe o alerta
+2. O usuário confirma e o script encerra
+3. A planilha deve ser corrigida manualmente
+4. O script deve ser executado novamente
+5. O processo continuará normalmente para os arquivos válidos
+
+────────────────────────────
+
+📌 COMPORTAMENTO GERAL
+
+• O processamento é sequencial (uma planilha por vez)
+
+• O sistema não retoma automaticamente após erro
+
+• Cada execução depende da integridade dos arquivos
+
+• A pasta "Enderecos" é sempre a fonte única de entrada
+
+────────────────────────────
+
 📌 OBSERVAÇÕES FINAIS
 
 • O projeto utiliza Selenium para automação de navegador
