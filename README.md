@@ -12,7 +12,8 @@ Automatizar etapas manuais do processo de migração de dados, reduzindo tempo o
 
 ⚙️ VISÃO GERAL / FLUXO AUTOMATIZADO
 
-![1782395691840](image/README/1782395691840.png)
+
+<img width="1024" height="1536" alt="diagrama_TELCO_MIGRATION_AUTOMATION" src="https://github.com/user-attachments/assets/60b389a4-98b2-4eef-b258-7a14ae701093" />
 
 • Acesso ao sistema Telco
 
