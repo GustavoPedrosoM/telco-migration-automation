@@ -1,47 +1,33 @@
+import time
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 from dotenv import load_dotenv
-import os
+from pathlib import Path
 
 load_dotenv()
 
 def iniciar_driver():
 
-    url = os.getenv("TELCO_URL")
+    url = os.getenv("URL")
     driver = webdriver.Chrome()
     driver.get(url)
     driver.maximize_window()
     return driver
 
+def aguardar_login_manual(driver):
+    espera = WebDriverWait(driver, 300)  # 5 minutos para o usuário logar
 
-def fazer_login(driver, usuario_texto, senha_texto):
-    time.sleep(3)
+    print("Aguardando login manual...")
 
-    usuario = driver.find_element(By.XPATH, "//input[@type='text']")
-    usuario.click()
-    usuario.send_keys(usuario_texto)
+    # espera até a URL mudar para a página principal após o login
+    espera.until(
+        EC.url_contains("/adapter/#/home")
+    )
 
-    time.sleep(1)
-
-    usuario.send_keys("\ue015")  
-    usuario.send_keys("\ue007")  
-
-    time.sleep(2)
-
-    senha = driver.find_element(By.XPATH, "//input[@type='password']")
-    senha.send_keys(senha_texto)
-
-    time.sleep(1)
-
-    botao = driver.find_element(By.XPATH, "//button[contains(normalize-space(.), 'Entrar')]")
-    botao.click()
-
-    time.sleep(5)
-
-import time
+    print("✓ Login detectado, retomando automação...")
 
 def acessar_migracao(driver):
 

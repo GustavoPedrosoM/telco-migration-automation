@@ -89,7 +89,7 @@ def clicar_salvar(driver):
 
 def mover_para_feito(caminho):
     origem = Path(caminho)
-    destino_pasta = Path("C:/Users/gustavo.machado/Documents/Enderecos/feito")
+    destino_pasta = Path.home() / "Documents" / "Enderecos" / "feito"
 
     # cria a pasta feito se não existir
     destino_pasta.mkdir(parents=True, exist_ok=True)

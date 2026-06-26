@@ -1,5 +1,6 @@
+import os
 from navegador import (
-    iniciar_driver, fazer_login,
+    iniciar_driver, aguardar_login_manual,
     acessar_migracao, clicar_novo,
     acessar_relatorios_migracao, acessar_erro,
     ordenar_migracao_descendente,
@@ -7,24 +8,15 @@ from navegador import (
 from upload import preencher_migracao, clicar_salvar, mover_para_feito
 from log_checker import verificar_erros_relatorio
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 driver = iniciar_driver()
-usuario = os.getenv("TELCO_USER")
-senha = os.getenv("TELCO_PASSWORD")
-
-fazer_login(
-    driver,
-    usuario,
-    senha
-)
+aguardar_login_manual(driver)
 acessar_migracao(driver)
 
 while True:
     clicar_novo(driver)
-
     caminho = preencher_migracao(driver)
 
     if not caminho:
@@ -41,7 +33,6 @@ while True:
         exit()
     
     mover_para_feito(caminho)
-
     acessar_migracao(driver)
     ordenar_migracao_descendente(driver)
     executar_migracao(driver)
