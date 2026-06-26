@@ -2,38 +2,43 @@
 
 Automação em Python para execução e validação de migrações em massa no sistema Telco.
 
-────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
 🎯 OBJETIVO
 
-Automatizar etapas manuais do processo de migração de dados, reduzindo tempo operacional e minimizando erros durante execuções repetitivas.
+━━━━━━━━━━━━━━━━━━━━━━
 
-────────────────────────────────────────────
+Automatizar etapas manuais do processo de migração de dados, reduzindo tempo operacional, aumentando a padronização do processo e minimizando erros durante execuções repetitivas.
 
-⚙️ VISÃO GERAL / FLUXO AUTOMATIZADO
+━━━━━━━━━━━━━━━━━━━━━━
 
+⚙️ VISÃO GERAL — FLUXO AUTOMATIZADO
 
-<img width="1024" height="1536" alt="diagrama_TELCO_MIGRATION_AUTOMATION" src="https://github.com/user-attachments/assets/60b389a4-98b2-4eef-b258-7a14ae701093" />
+━━━━━━━━━━━━━━━━━━━━━━
 
-• Acesso ao sistema Telco
+✔️ Acesso ao sistema Telco
 
-• Login automático
+✔️ Login manual realizado pelo usuário
 
-• Navegação até tela de migração
+✔️ Navegação automática até a tela de migração
 
-• Seleção de parâmetros
+✔️ Seleção dos parâmetros necessários
 
-• Upload de arquivos
+✔️ Upload automático das planilhas
 
-• Execução da análise
+✔️ Execução da análise
 
-• Verificação de logs e erros
+✔️ Verificação de logs e validação de erros
 
-• Execução final da migração
+✔️ Movimentação das planilhas processadas
 
-────────────────────────────────────────────
+✔️ Execução final da migração
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 🧰 TECNOLOGIAS UTILIZADAS
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 • Python 3.x
 
@@ -43,37 +48,47 @@ Automatizar etapas manuais do processo de migração de dados, reduzindo tempo o
 
 • python-dotenv
 
-────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
 📁 ESTRUTURA DO PROJETO
 
+━━━━━━━━━━━━━━━━━━━━━━
+
 telco_migracao/
 
-* main.py
-* navegador.py
-* upload.py
-* log_checker.py
-* .env.example
-* .gitignore
-* requirements.txt
+├── main.py
 
-────────────────────────────────────────────
+├── navegador.py
+
+├── upload.py
+
+├── log_checker.py
+
+├── .env
+
+├── .env.example
+
+├── .gitignore
+
+└── requirements.txt
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 ⚙️ CONFIGURAÇÃO DO AMBIENTE
 
-Este projeto utiliza variáveis de ambiente para proteger informações sensíveis como credenciais e URLs.
+━━━━━━━━━━━━━━━━━━━━━━
 
-────────────────────────────
+Este projeto utiliza variáveis de ambiente para proteger informações sensíveis, como a URL do sistema.
 
-1. Criar arquivo .env
+1️⃣ Criar arquivo .env
 
-Na raiz do projeto, criar um arquivo chamado .env:
+Na raiz do projeto, criar um arquivo chamado:
 
-TELCO_URL=[https://teste.adapter.net.br/adapter/#/login](https://teste.adapter.net.br/adapter/#/login)
+.env
 
-TELCO_USER=seu_usuario
+Conteúdo:
 
-TELCO_PASSWORD=sua_senha
+TELCO_URL=link_telco
 
 🔐 Importante:
 
@@ -83,21 +98,19 @@ TELCO_PASSWORD=sua_senha
 
 • Já está incluído no .gitignore
 
-────────────────────────────
+2️⃣ Arquivo de exemplo (.env.example)
 
-2. Exemplo de arquivo .env.example
+Conteúdo:
 
 TELCO_URL=
 
-TELCO_USER=
-
-TELCO_PASSWORD=
-
-────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
 📦 INSTALAÇÃO
 
-1. Criar ambiente virtual (opcional, recomendado)
+━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ Criar ambiente virtual (recomendado)
 
 Windows:
 
@@ -109,9 +122,7 @@ Linux / Mac:
 
 source venv/bin/activate
 
-────────────────────────────
-
-2. Instalar dependências
+2️⃣ Instalar dependências
 
 pip install -r requirements.txt
 
@@ -119,177 +130,226 @@ ou
 
 pip install selenium python-dotenv
 
-────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
 🚀 COMO EXECUTAR
 
-Após configurar o .env:
+━━━━━━━━━━━━━━━━━━━━━━
+
+▶️ Via Python
+
+Após configurar o arquivo .env:
 
 python main.py
 
-────────────────────────────────────────────
+▶️ Via Executável (.exe)
 
-🔄 COMO FUNCIONA O USO DO .env
+O projeto também pode ser distribuído como executável (.exe) para facilitar o uso por usuários que não possuem ambiente Python configurado.
 
-O projeto carrega automaticamente as variáveis de ambiente:
+Regras:
 
-import os
+• Executar o arquivo .exe diretamente
 
-from dotenv import load_dotenv
+• O arquivo .env deve estar na mesma pasta do executável
 
-load_dotenv()
+━━━━━━━━━━━━━━━━━━━━━━
 
-usuario = os.getenv("TELCO_USER")
+🔑 LOGIN
 
-senha = os.getenv("TELCO_PASSWORD")
+━━━━━━━━━━━━━━━━━━━━━━
 
-url = os.getenv("TELCO_URL")
+Ao iniciar, o script abre automaticamente o navegador na tela de login do sistema Telco.
 
-────────────────────────────────────────────
+O usuário deve:
+
+1. Inserir suas credenciais manualmente
+2. Realizar autenticação normalmente
+
+Após o login, a automação detecta a autenticação e assume o controle automaticamente.
+
+✅ Nenhuma credencial é armazenada em arquivos ou no código.
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 👥 USO EM MÚLTIPLOS AMBIENTES
 
-🧪 Homologação:
+━━━━━━━━━━━━━━━━━━━━━━
 
-TELCO_URL=[https://teste.adapter.net.br/adapter/#/login](https://teste.adapter.net.br/adapter/#/login)
+🧪 Ambiente de Homologação
 
-TELCO_USER=usuario_teste
+TELCO_URL=
 
-TELCO_PASSWORD=senha_teste
+🚀 Ambiente de Produção
 
-🚀 Produção:
+TELCO_URL=
 
-TELCO_URL=[https://producao.adapter.net.br/adapter/#/login](https://producao.adapter.net.br/adapter/#/login)
+Cada usuário pode configurar seu próprio ambiente apenas alterando o arquivo .env.
 
-TELCO_USER=usuario_real
-
-TELCO_PASSWORD=senha_real
-
-────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
 🔒 BOAS PRÁTICAS
 
-• Nunca commitar o arquivo .env
+━━━━━━━━━━━━━━━━━━━━━━
 
-• Usar sempre .env.example como base
+✅ Nunca commitar o arquivo .env
 
-• Cada desenvolvedor deve ter seu próprio .env
+✅ Utilizar .env.example como modelo
 
-• Não armazenar credenciais no código
+✅ Cada usuário deve possuir seu próprio .env
 
-• Separar ambientes (produção / homologação)
+✅ Não armazenar credenciais no código
 
-────────────────────────────────────────────
+✅ Separar ambientes de homologação e produção
+
+✅ Utilizar controle de versão no projeto
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 🧪 PRIMEIRA EXECUÇÃO
 
-1. Clonar o repositório
-2. Criar arquivo .env
-3. Instalar dependências
-4. Executar: python main.py
+━━━━━━━━━━━━━━━━━━━━━━
 
-────────────────────────────────────────────
+1. Clonar o repositório
+2. Criar arquivo .env com a URL do sistema
+3. Instalar dependências
+4. Executar:
+
+python main.py
+
+5. Realizar login manual no navegador aberto
+6. Aguardar a automação assumir o processo
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 📂 PROCESSO DE ENTRADA DE ARQUIVOS (PLANILHAS)
 
-A automação foi projetada para realizar a migração de planilhas de endereços para o ambiente de produção.
+━━━━━━━━━━━━━━━━━━━━━━
 
-Essas planilhas NÃO são inseridas manualmente no script, mas sim organizadas localmente no computador.
+A automação processa planilhas de endereços organizadas localmente no computador.
 
-────────────────────────────
+📥 Origem das Planilhas
 
-📥 ORIGEM DAS PLANILHAS
+As planilhas devem ser baixadas a partir do SharePoint da empresa.
 
-As planilhas são baixadas a partir do SharePoint da empresa.
+Após o download:
 
-Após o download, o usuário deve organizar os arquivos da seguinte forma:
+1. Acessar a pasta Documentos
+2. Criar uma pasta chamada:
 
-• Ir até a pasta "Documentos" do computador
+Enderecos
 
-• Criar uma pasta chamada: Enderecos
+3. Colocar todas as planilhas .xlsx dentro dela
 
-• Colocar todas as planilhas dentro desta pasta
-
-Exemplo de estrutura:
+Estrutura esperada:
 
 Documentos/
 
 └── Enderecos/
 
-├── arquivo1.xlsx
+  ├── arquivo1.xlsx
 
-├── arquivo2.xlsx
+  ├── arquivo2.xlsx
 
-├── arquivo3.xlsx
+  └── arquivo3.xlsx
 
-────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━
 
-🚀 COMO A AUTOMAÇÃO PROCESSA OS ARQUIVOS
+🚀 PROCESSAMENTO AUTOMÁTICO DAS PLANILHAS
 
-Ao executar o script:
+━━━━━━━━━━━━━━━━━━━━━━
 
-• O sistema acessa automaticamente a pasta "Documentos/Enderecos"
+Durante a execução:
 
-• Lê todas as planilhas disponíveis na pasta
+• O sistema acessa automaticamente Documentos/Enderecos
 
-• Processa uma por uma de forma sequencial
+• Processa os arquivos um por vez
 
-• Realiza a migração para o sistema Telco
+• Executa análise e validação
 
-Quando todas as planilhas forem processadas:
+• Concluindo com sucesso → move o arquivo para "feito"
 
-• O script encerra automaticamente
+• Cria a pasta "feito" automaticamente caso não exista
 
-• Para novas execuções, basta adicionar novos arquivos na pasta e rodar novamente o script
+• Finaliza quando não houver mais arquivos pendentes
 
-────────────────────────────
+Estrutura após execução:
+
+Documentos/
+
+└── Enderecos/
+
+  ├── feito/
+
+  │ ├── arquivo1.xlsx
+
+  │ └── arquivo2.xlsx
+
+  └── arquivo3.xlsx ← arquivo com erro aguardando correção
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 ⚠️ TRATAMENTO DE ERROS NAS PLANILHAS
 
-Durante a execução, algumas planilhas podem conter inconsistências ou erros de validação.
+━━━━━━━━━━━━━━━━━━━━━━
+
+Durante o processamento podem ocorrer inconsistências ou falhas de validação.
 
 Quando isso acontecer:
 
-• A automação irá identificar o erro durante o processo
+❌ O erro é identificado automaticamente
 
-• Um alerta será exibido para o usuário
+❌ Um alerta é exibido ao usuário
 
-• O usuário deve clicar em "OK" para confirmar o aviso
+❌ A planilha permanece na pasta Enderecos
 
-• Após confirmação, o script será interrompido automaticamente
+❌ O usuário confirma o alerta
 
-────────────────────────────
+❌ O script é encerrado automaticamente
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 🔧 FLUXO DE CORREÇÃO
 
-Caso uma planilha apresente erro:
+━━━━━━━━━━━━━━━━━━━━━━
 
-1. O script exibe o alerta
-2. O usuário confirma e o script encerra
-3. A planilha deve ser corrigida manualmente
-4. O script deve ser executado novamente
-5. O processo continuará normalmente para os arquivos válidos
+1. O alerta de erro é exibido
+2. O usuário confirma a mensagem
+3. O script encerra
+4. A planilha é corrigida manualmente
+5. O processo é iniciado novamente
 
-────────────────────────────
+Após correção, apenas os arquivos pendentes serão processados.
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 📌 COMPORTAMENTO GERAL
 
-• O processamento é sequencial (uma planilha por vez)
+━━━━━━━━━━━━━━━━━━━━━━
 
-• O sistema não retoma automaticamente após erro
+• Processamento sequencial (1 planilha por vez)
+
+• Não existe retomada automática após erro
 
 • Cada execução depende da integridade dos arquivos
 
-• A pasta "Enderecos" é sempre a fonte única de entrada
+• A pasta Enderecos é a fonte única de entrada
 
-────────────────────────────
+• Arquivos concluídos são movidos para Enderecos/feito
+
+• Arquivos com erro permanecem para correção
+
+━━━━━━━━━━━━━━━━━━━━━━
 
 📌 OBSERVAÇÕES FINAIS
 
-• O projeto utiliza Selenium para automação de navegador
+━━━━━━━━━━━━━━━━━━━━━━
 
-• O ChromeDriver deve ser compatível com a versão do Chrome instalada
+🖥️ O projeto utiliza Selenium para automação de navegador
 
-• O funcionamento depende da disponibilidade do sistema Telco
+🌐 O ChromeDriver deve ser compatível com a versão instalada do Chrome
 
-────────────────────────────────────────────
+🔄 O funcionamento depende da disponibilidade do sistema Telco
+
+🔒 As credenciais permanecem sob responsabilidade do usuário
+
+🚀 Desenvolvido para reduzir esforço operacional e aumentar confiabilidade em migrações em massa
