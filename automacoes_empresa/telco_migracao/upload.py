@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from pathlib import Path
 import shutil
 
+
 def obter_proximo_arquivo():
     home = Path.home()
     for nome_pasta in ["Documents", "Documentos"]:
@@ -39,10 +40,7 @@ def preencher_migracao(driver):
     caminho = obter_proximo_arquivo()
 
     if not caminho:
-        print("Nenhum arquivo encontrado")
         return False
-
-    print(f"Enviando: {caminho}")
 
     upload = espera.until(
         EC.presence_of_element_located(
@@ -54,7 +52,7 @@ def preencher_migracao(driver):
 
     acao = espera.until(
         EC.presence_of_element_located(
-            (By.CSS_SELECTOR, "select[ng-model='migracaoDados.acao']")  # ajuste o ng-model correto
+            (By.CSS_SELECTOR, "select[ng-model='migracaoDados.acao']")
         )
     )
 
@@ -62,17 +60,16 @@ def preencher_migracao(driver):
 
     return caminho
 
+
 def clicar_salvar(driver):
     espera = WebDriverWait(driver, 60)
 
-    # aguarda loader-text sumir
     espera.until(
         EC.invisibility_of_element_located(
             (By.CLASS_NAME, "loader-text")
         )
     )
 
-    # aguarda modal-loading sumir
     espera.until(
         EC.invisibility_of_element_located(
             (By.CLASS_NAME, "modal-loading")
@@ -87,14 +84,16 @@ def clicar_salvar(driver):
 
     driver.execute_script("arguments[0].click();", salvar)
 
+
 def mover_para_feito(caminho):
     origem = Path(caminho)
-    destino_pasta = Path.home() / "Documents" / "Enderecos" / "feito"
+    home = Path.home()
 
-    # cria a pasta feito se não existir
-    destino_pasta.mkdir(parents=True, exist_ok=True)
-
-    destino = destino_pasta / origem.name
-
-    shutil.move(str(origem), str(destino))
-    print(f"Arquivo movido para: {destino}")
+    for nome_pasta in ["Documents", "Documentos"]:
+        pasta_base = home / nome_pasta / "Enderecos"
+        if pasta_base.exists():
+            destino_pasta = pasta_base / "feito"
+            destino_pasta.mkdir(parents=True, exist_ok=True)
+            destino = destino_pasta / origem.name
+            shutil.move(str(origem), str(destino))
+            return

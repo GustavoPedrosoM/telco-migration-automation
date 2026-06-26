@@ -1,52 +1,60 @@
 import time
 import os
+import subprocess
+import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from dotenv import load_dotenv
-from pathlib import Path
 
 load_dotenv()
 
-def iniciar_driver():
+def obter_versao_chrome():
+    try:
+        resultado = subprocess.run(
+            r'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version',
+            capture_output=True, text=True, shell=True
+        )
+        versao = re.search(r'(\d+)\.\d+\.\d+\.\d+', resultado.stdout)
+        if versao:
+            return versao.group(1)
+    except:
+        pass
+    return None
 
-    url = os.getenv("URL")
-    driver = webdriver.Chrome()
+def iniciar_driver():
+    url = os.getenv("TELCO_URL")
+    versao = obter_versao_chrome()
+    service = Service(ChromeDriverManager(driver_version=versao).install())
+    driver = webdriver.Chrome(service=service)
     driver.get(url)
     driver.maximize_window()
     return driver
 
+
 def aguardar_login_manual(driver):
-    espera = WebDriverWait(driver, 300)  # 5 minutos para o usuário logar
+    espera = WebDriverWait(driver, 300)
 
-    print("Aguardando login manual...")
-
-    # espera até a URL mudar para a página principal após o login
     espera.until(
         EC.url_contains("/adapter/#/home")
     )
 
-    print("✓ Login detectado, retomando automação...")
 
 def acessar_migracao(driver):
-
     espera = WebDriverWait(driver, 60)
 
-    # aguarda o modal de loading sumir
     espera.until(
         EC.invisibility_of_element_located(
             (By.CLASS_NAME, "modal-loading")
         )
     )
 
-    # abre menu Migração
     menu_migracao = espera.until(
         EC.element_to_be_clickable(
-            (
-                By.XPATH,
-                "//span[contains(normalize-space(.), 'Migração')]"
-            )
+            (By.XPATH, "//span[contains(normalize-space(.), 'Migração')]")
         )
     )
 
@@ -55,19 +63,16 @@ def acessar_migracao(driver):
 
     migracao_massa = espera.until(
         EC.element_to_be_clickable(
-            (
-                By.XPATH,
-                "//span[contains(normalize-space(.), 'Migração / Alteração de dados em massa')]"
-            )
+            (By.XPATH, "//span[contains(normalize-space(.), 'Migração / Alteração de dados em massa')]")
         )
     )
 
     driver.execute_script("arguments[0].click();", migracao_massa)
 
+
 def clicar_novo(driver):
     espera = WebDriverWait(driver, 60)
 
-    # aguarda os loaders sumirem após execução da migração
     aguardar_carregamento(driver)
 
     botao_novo = espera.until(
@@ -78,8 +83,8 @@ def clicar_novo(driver):
 
     driver.execute_script("arguments[0].click();", botao_novo)
 
-def acessar_relatorios_migracao(driver):
 
+def acessar_relatorios_migracao(driver):
     espera = WebDriverWait(driver, 60)
 
     aguardar_carregamento(driver)
@@ -87,7 +92,6 @@ def acessar_relatorios_migracao(driver):
     espera.until(
         EC.url_contains("/migracao/migracao_dados")
     )
-    print("✓ redirecionou para migracao_dados")
 
     menu_migracao = espera.until(
         EC.element_to_be_clickable(
@@ -96,7 +100,6 @@ def acessar_relatorios_migracao(driver):
     )
 
     driver.execute_script("arguments[0].click();", menu_migracao)
-    print("✓ clicou no menu Migração")
 
     relatorios = espera.until(
         EC.element_to_be_clickable(
@@ -105,16 +108,13 @@ def acessar_relatorios_migracao(driver):
     )
 
     driver.execute_script("arguments[0].click();", relatorios)
-    print("✓ clicou em Relatórios")
-
-    print(f"URL atual: {driver.current_url}")
 
     espera.until(
         EC.presence_of_element_located(
             (By.XPATH, "//a[@href='#/relatorios/migracao/42']")
         )
     )
-    print("✓ encontrou link erro cadastral")
+
 
 def acessar_erro(driver):
     espera = WebDriverWait(driver, 60)
@@ -135,10 +135,12 @@ def acessar_erro(driver):
 
     driver.execute_script("arguments[0].click();", botao_visualizar)
 
-    # aguarda a nova aba abrir
+    time.sleep(4)
+
     espera.until(
         lambda d: len(d.window_handles) > 1
     )
+
 
 def ordenar_migracao_descendente(driver):
     espera = WebDriverWait(driver, 30)
@@ -149,21 +151,19 @@ def ordenar_migracao_descendente(driver):
         )
     )
 
-    # verifica se já está descendente, se não estiver clica
     if "sorting_desc" not in th_numero.get_attribute("class"):
         driver.execute_script("arguments[0].click();", th_numero)
 
-    # aguarda a tabela reordenar
     espera.until(
         EC.presence_of_element_located(
             (By.CSS_SELECTOR, "th.hidden-xs.sorting_desc[aria-controls='viewMigracaoDados']")
         )
     )
 
+
 def executar_migracao(driver):
     espera = WebDriverWait(driver, 30)
 
-    # pega o botão de executar apenas da primeira linha da tabela
     botao_executar = espera.until(
         EC.element_to_be_clickable(
             (By.XPATH, "(//button[@ng-click='migrarAnalise(migracaoDados)'])[1]")
@@ -172,7 +172,6 @@ def executar_migracao(driver):
 
     driver.execute_script("arguments[0].click();", botao_executar)
 
-    # aguarda o modal de confirmação aparecer
     botao_ok = espera.until(
         EC.element_to_be_clickable(
             (By.XPATH, "//button[@data-bb-handler='confirm']")
@@ -180,6 +179,7 @@ def executar_migracao(driver):
     )
 
     botao_ok.click()
+
 
 def aguardar_carregamento(driver, timeout=60):
     espera = WebDriverWait(driver, timeout)
