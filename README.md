@@ -40,13 +40,10 @@ Automatizar etapas manuais do processo de migração de dados, reduzindo tempo o
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
-• Python 3.x
-
-• Selenium
-
-• Chrome WebDriver
-
-• python-dotenv
+* Python 3.x
+* Selenium
+* Chrome WebDriver
+* python-dotenv
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -88,21 +85,19 @@ Na raiz do projeto, criar um arquivo chamado:
 
 Conteúdo:
 
-TELCO_URL=link_telco
+URL=link_telco
 
 🔐 Importante:
 
-• O arquivo .env contém dados sensíveis
-
-• NÃO deve ser enviado ao GitHub
-
-• Já está incluído no .gitignore
+* O arquivo .env contém dados sensíveis
+* NÃO deve ser enviado ao GitHub
+* Já está incluído no .gitignore
 
 2️⃣ Arquivo de exemplo (.env.example)
 
 Conteúdo:
 
-TELCO_URL=
+URL=
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -128,7 +123,7 @@ pip install -r requirements.txt
 
 ou
 
-pip install selenium python-dotenv
+pip install selenium python-dotenv webdriver-manager
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -144,13 +139,16 @@ python main.py
 
 ▶️ Via Executável (.exe)
 
-O projeto também pode ser distribuído como executável (.exe) para facilitar o uso por usuários que não possuem ambiente Python configurado.
+O projeto é distribuído como executável (.exe) para facilitar o uso por usuários que não possuem ambiente Python configurado.
 
-Regras:
+Para utilizar:
 
-• Executar o arquivo .exe diretamente
+* Receber os arquivos main.exe e .env
+* Colocar os dois na mesma pasta
+* Ter o Google Chrome instalado na máquina
+* Executar o main.exe diretamente
 
-• O arquivo .env deve estar na mesma pasta do executável
+O ChromeDriver compatível com a versão do Chrome instalada é baixado automaticamente na primeira execução. É necessário ter conexão com a internet.
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -167,6 +165,8 @@ O usuário deve:
 
 Após o login, a automação detecta a autenticação e assume o controle automaticamente.
 
+É possível utilizar o Chrome em outra janela e/ou o computador normalmente enquanto a automação executa, apenas evite cliques desnecessários na janela onde ela está rodando.
+
 ✅ Nenhuma credencial é armazenada em arquivos ou no código.
 
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -177,11 +177,11 @@ Após o login, a automação detecta a autenticação e assume o controle automa
 
 🧪 Ambiente de Homologação
 
-TELCO_URL=
+URL=
 
 🚀 Ambiente de Produção
 
-TELCO_URL=
+URL=
 
 Cada usuário pode configurar seu próprio ambiente apenas alterando o arquivo .env.
 
@@ -212,10 +212,7 @@ Cada usuário pode configurar seu próprio ambiente apenas alterando o arquivo .
 1. Clonar o repositório
 2. Criar arquivo .env com a URL do sistema
 3. Instalar dependências
-4. Executar:
-
-python main.py
-
+4. Executar: python main.py
 5. Realizar login manual no navegador aberto
 6. Aguardar a automação assumir o processo
 
@@ -234,10 +231,7 @@ As planilhas devem ser baixadas a partir do SharePoint da empresa.
 Após o download:
 
 1. Acessar a pasta Documentos
-2. Criar uma pasta chamada:
-
-Enderecos
-
+2. Criar uma pasta chamada: Enderecos
 3. Colocar todas as planilhas .xlsx dentro dela
 
 Estrutura esperada:
@@ -246,11 +240,11 @@ Documentos/
 
 └── Enderecos/
 
-  ├── arquivo1.xlsx
+├── arquivo1.xlsx
 
-  ├── arquivo2.xlsx
+├── arquivo2.xlsx
 
-  └── arquivo3.xlsx
+└── arquivo3.xlsx
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -260,17 +254,13 @@ Documentos/
 
 Durante a execução:
 
-• O sistema acessa automaticamente Documentos/Enderecos
-
-• Processa os arquivos um por vez
-
-• Executa análise e validação
-
-• Concluindo com sucesso → move o arquivo para "feito"
-
-• Cria a pasta "feito" automaticamente caso não exista
-
-• Finaliza quando não houver mais arquivos pendentes
+* O sistema acessa automaticamente Documentos/Enderecos
+* Processa os arquivos um por vez
+* Executa análise e validação
+* Concluindo com sucesso → move o arquivo para "feito"
+* Cria a pasta "feito" automaticamente caso não exista
+* Exibe um popup de conclusão quando não houver mais arquivos pendentes
+* Encerra automaticamente após o popup ser confirmado
 
 Estrutura após execução:
 
@@ -278,13 +268,13 @@ Documentos/
 
 └── Enderecos/
 
-  ├── feito/
+├── feito/
 
-  │ ├── arquivo1.xlsx
+│   ├── arquivo1.xlsx
 
-  │ └── arquivo2.xlsx
+│   └── arquivo2.xlsx
 
-  └── arquivo3.xlsx ← arquivo com erro aguardando correção
+└── arquivo3.xlsx ← arquivo com erro aguardando correção
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -298,11 +288,11 @@ Quando isso acontecer:
 
 ❌ O erro é identificado automaticamente
 
-❌ Um alerta é exibido ao usuário
+❌ Um popup de alerta é exibido ao usuário
 
 ❌ A planilha permanece na pasta Enderecos
 
-❌ O usuário confirma o alerta
+❌ O usuário confirma o alerta clicando em OK
 
 ❌ O script é encerrado automaticamente
 
@@ -312,8 +302,8 @@ Quando isso acontecer:
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
-1. O alerta de erro é exibido
-2. O usuário confirma a mensagem
+1. O popup de erro é exibido
+2. O usuário confirma clicando em OK
 3. O script encerra
 4. A planilha é corrigida manualmente
 5. O processo é iniciado novamente
@@ -326,17 +316,12 @@ Após correção, apenas os arquivos pendentes serão processados.
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
-• Processamento sequencial (1 planilha por vez)
-
-• Não existe retomada automática após erro
-
-• Cada execução depende da integridade dos arquivos
-
-• A pasta Enderecos é a fonte única de entrada
-
-• Arquivos concluídos são movidos para Enderecos/feito
-
-• Arquivos com erro permanecem para correção
+* Processamento sequencial (1 planilha por vez)
+* Não existe retomada automática após erro
+* Cada execução depende da integridade dos arquivos
+* A pasta Enderecos é a fonte única de entrada
+* Arquivos concluídos são movidos para Enderecos/feito
+* Arquivos com erro permanecem para correção
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
@@ -346,7 +331,7 @@ Após correção, apenas os arquivos pendentes serão processados.
 
 🖥️ O projeto utiliza Selenium para automação de navegador
 
-🌐 O ChromeDriver deve ser compatível com a versão instalada do Chrome
+🌐 O ChromeDriver é baixado automaticamente de acordo com a versão do Chrome instalada
 
 🔄 O funcionamento depende da disponibilidade do sistema Telco
 
